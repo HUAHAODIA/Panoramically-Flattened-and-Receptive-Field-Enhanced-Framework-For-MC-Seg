@@ -587,43 +587,22 @@ Expected properties:
 
 ---
 
-## 6. Naming: development names vs. released names
+## 6. Citation
 
-The modules are renamed for the public release. This matters only if you load
-checkpoints trained with the development code.
+If you use these modules in your research, please cite the paper:
 
-| Released | Development name | File used during development |
-| --- | --- | --- |
-| `CSIB` | `MFSBlock3D_enhance` | `multi_feature_neck_enhance.py` |
-| `BRH` | `LKA_Attention_Block_3D` | `largekernel.py` |
-| `PlainConvEncoder_CSIB` | `PlainConvEncoder_MFS_enhance` | `plain_conv_encoder_neck_enhance.py` |
-| `encoder.csib` | `encoder.mfs_block` | `plain_conv_encoder_neck_enhance.py` |
-| `decoder.brh` | `decoder.lka_head` | `unet_decoder.py` |
+**Xie, S., Lin, C., Huang, D., Zhang, L., & Cai, B. (2027). A panoramically flattened and receptive-field-enhanced framework for topology-preserving mandibular canal segmentation in CBCT. *Expert Systems With Applications*, 333, 134269. https://doi.org/10.1016/j.eswa.2026.134269**
 
-All sub-modules (`AMFF3D_Dynamic`, `ParallelDualAttention3D`,
-`ChannelAttention3D`, `SpatialAttention3D`, `LKA_3D`) keep their original names
-and all their parameter names are unchanged, so the computation is numerically
-identical. Only the two top-level module names and the two host attribute names
-change, which means `state_dict` keys shift accordingly:
-
-```python
-# Remap a checkpoint trained with the development code to the released names.
-remap = lambda k: (k.replace("encoder.mfs_block.", "encoder.csib.")
-                    .replace("decoder.lka_head.", "decoder.brh."))
-state = {remap(k): v for k, v in checkpoint["network_weights"].items()}
-```
-
----
-
-## 7. Citation
-
-If you use these modules, please cite:
+Or in BibTeX format:
 
 ```bibtex
-@article{<key>,
-  title   = {<paper title>},
-  author  = {<authors>},
-  journal = {<venue>},
-  year    = {<year>}
+@article{xie2027panoramically,
+  title   = {A panoramically flattened and receptive-field-enhanced framework for topology-preserving mandibular canal segmentation in CBCT},
+  author  = {Xie, Shaojun and Lin, Chaoying and Huang, Dingming and Zhang, Lan and Cai, Biao},
+  journal = {Expert Systems with Applications},
+  volume  = {333},
+  pages   = {134269},
+  year    = {2027},
+  doi     = {10.1016/j.eswa.2026.134269}
 }
 ```
